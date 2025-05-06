@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # Add other annotations based on your ingress controller
+spec:
+  rules:
+  - host: monitoring.example.com  # Replace with your actual domain
+    http:
+      paths:
+      - path: /grafana(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 80
+  # Uncomment and configure if you have TLS certificates
+  # tls:
+  # - hosts:
+  #   - monitoring.example.com
+  #   secretName: monitoring-tls-secret
